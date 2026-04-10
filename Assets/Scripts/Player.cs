@@ -8,9 +8,13 @@ public class Player : MonoBehaviour
     private bool isFacingRight = true;
     public float moveSpeed = 5f;
     public float jumpForce = 10f;
+    public float bulletSpeed = 10f;
     public bool isGrounded = false;
     private float moveInput;
     private Rigidbody2D rb;
+    private bool holdingSlingshot = false;
+    [SerializeField] private Sprite armedCapybara;
+    [SerializeField] private GameObject bulletPrefab;
 
 
     [SerializeField] private Collider2D bodyCollider;
@@ -32,6 +36,10 @@ public class Player : MonoBehaviour
         
         rb.linearVelocity = new Vector2(moveInput * moveSpeed, rb.linearVelocityY);
         Flip();
+
+        if (holdingSlingshot && Input.GetKeyDown(KeyCode.Mouse0)){
+            Shoot();
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D other)
@@ -66,5 +74,33 @@ public class Player : MonoBehaviour
             isFacingRight = !isFacingRight;
             spriteRenderer.flipX = !spriteRenderer.flipX;
         }
+    }
+
+    void OnEnable()
+    {
+        Slingshot.SlingshotPickedUp += HandleSlingshotPickedUp;
+    }
+
+    void OnDisable()
+    {
+        Slingshot.SlingshotPickedUp -= HandleSlingshotPickedUp;
+    }
+
+    void HandleSlingshotPickedUp()
+    {
+        spriteRenderer.sprite = armedCapybara;
+        holdingSlingshot = true;
+    }
+
+    private void Shoot(){
+        GameObject bullet = Instantiate(bulletPrefab, transform.position, transform.rotation);
+        Rigidbody2D bulletRb = bullet.GetComponent<Rigidbody2D>();
+        if (isFacingRight){
+            bulletRb.linearVelocity = transform.right * bulletSpeed;
+        } else{
+            bulletRb.linearVelocity = transform.right * bulletSpeed * -1;
+        }
+        
+        Destroy(bullet, 5f);
     }
 }

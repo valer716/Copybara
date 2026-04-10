@@ -1,11 +1,10 @@
 using System;
 using UnityEngine;
 
-public class Coin : MonoBehaviour
+public class Slingshot : MonoBehaviour
 {
-    //ez az event dolog egy ilyen jelzés vmi más objectnek, hogy történt valami, az invoke-kal hívjuk meg, ez csak a deklaráció, és a másik objektumot fel kell majd iratkoztatni
-    public static event Action CoinPickedUp;
 
+    public static event Action SlingshotPickedUp;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -20,8 +19,7 @@ public class Coin : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        CoinPickedUp?.Invoke();
+        SlingshotPickedUp?.Invoke();
         Destroy(gameObject);
     }
 }
-
