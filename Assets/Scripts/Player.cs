@@ -66,12 +66,12 @@ public class Player : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            // Normál ugrás földrõl
+            // Normal ugras foldrol
             if (isGrounded && !isClimbing)
             {
                 rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
             }
-            // Ugrás mászható falról
+            // Ugrï¿½s mï¿½szhatï¿½ falrï¿½l
             else if (isClimbing)
             {
                 isClimbing = false;
@@ -81,11 +81,11 @@ public class Player : MonoBehaviour
 
                 if (canClimbLeft)
                 {
-                    jumpDirection = -1f; // bal oldali falról balra ugrik el
+                    jumpDirection = -1f; // bal oldali falrï¿½l balra ugrik el
                 }
                 else if (canClimbRight)
                 {
-                    jumpDirection = 1f; // jobb oldali falról jobbra ugrik el
+                    jumpDirection = 1f; // jobb oldali falrï¿½l jobbra ugrik el
                 }
 
                 rb.linearVelocity = new Vector2(jumpDirection * moveSpeed, jumpForce);
@@ -95,15 +95,15 @@ public class Player : MonoBehaviour
 
     private void HandleClimbing()
     {
-        // Ha a fal bal oldala mászható, a játékos bal oldalon áll és JOBBRA nyomja magát neki
+        // Ha a fal bal oldala mï¿½szhatï¿½, a jï¿½tï¿½kos bal oldalon ï¿½ll ï¿½s JOBBRA nyomja magï¿½t neki
         bool pressingIntoLeftWall = canClimbLeft && moveInput > 0f;
 
-        // Ha a fal jobb oldala mászható, a játékos jobb oldalon áll és BALRA nyomja magát neki
+        // Ha a fal jobb oldala mï¿½szhatï¿½, a jï¿½tï¿½kos jobb oldalon ï¿½ll ï¿½s BALRA nyomja magï¿½t neki
         bool pressingIntoRightWall = canClimbRight && moveInput < 0f;
 
         bool pressingIntoClimbableWall = pressingIntoLeftWall || pressingIntoRightWall;
 
-        // Ha a megfelelõ oldalról nyomja a falat, elkezdhet mászni
+        // Ha a megfelelï¿½ oldalrï¿½l nyomja a falat, elkezdhet mï¿½szni
         if (pressingIntoClimbableWall)
         {
             isClimbing = true;
@@ -111,7 +111,7 @@ public class Player : MonoBehaviour
 
         if (isClimbing)
         {
-            // Ha már nem a fal felé nyomja magát, megszûnik a mászás
+            // Ha mï¿½r nem a fal felï¿½ nyomja magï¿½t, megszï¿½nik a mï¿½szï¿½s
             if (!pressingIntoClimbableWall)
             {
                 isClimbing = false;
@@ -121,7 +121,7 @@ public class Player : MonoBehaviour
 
             rb.gravityScale = climbingGravityScale;
 
-            // Csak függõlegesen mozogjon mászás közben
+            // Csak fï¿½ggï¿½legesen mozogjon mï¿½szï¿½s kï¿½zben
             rb.linearVelocity = new Vector2(0f, verticalInput * climbSpeed);
         }
         else
