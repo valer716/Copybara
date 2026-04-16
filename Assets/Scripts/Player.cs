@@ -10,6 +10,8 @@ public class Player : MonoBehaviour
     public float moveSpeed = 5f;
     public float jumpForce = 10f;
     public float bulletSpeed = 10f;
+    public float timeAfterLastShot = 0f;
+    [SerializeField] public float timeAfterLastShotDefault = 1.0f; //itt annyi a szám ahány másodpercenként lehessen újra lőni
     public float climbSpeed = 3f;
     public bool isGrounded = false;
 
@@ -38,6 +40,15 @@ public class Player : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
+    void FixedUpdate()
+    {
+        if (timeAfterLastShot > 0)
+        {
+            timeAfterLastShot -= Time.deltaTime;
+        }
+
+    }
+
     void Update()
     {
         moveInput = Input.GetAxisRaw("Horizontal");
@@ -48,9 +59,10 @@ public class Player : MonoBehaviour
         HandleJump();
         Flip();
 
-        if (holdingSlingshot && Input.GetKeyDown(KeyCode.Mouse0))
+        if (holdingSlingshot && timeAfterLastShot <=0 && Input.GetKeyDown(KeyCode.Mouse0))
         {
             Shoot();
+            timeAfterLastShot = timeAfterLastShotDefault;
         }
     }
 
@@ -214,7 +226,12 @@ public class Player : MonoBehaviour
 
     private void Shoot()
     {
-        GameObject bullet = Instantiate(bulletPrefab, transform.position, transform.rotation);
+        GameObject bullet;
+        if (isFacingRight){
+            bullet = Instantiate(bulletPrefab, transform.position + new Vector3(0.5f, 0, 0), transform.rotation);
+        } else{
+            bullet = Instantiate(bulletPrefab, transform.position + new Vector3(-0.5f, 0, 0), transform.rotation);
+        }
         Rigidbody2D bulletRb = bullet.GetComponent<Rigidbody2D>();
 
         if (isFacingRight)
