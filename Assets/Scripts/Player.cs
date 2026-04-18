@@ -1,4 +1,5 @@
 using System;
+using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -12,8 +13,10 @@ public class Player : MonoBehaviour
     public float bulletSpeed = 10f;
     public float timeAfterLastShot = 0f;
     [SerializeField] public float timeAfterLastShotDefault = 1.0f; //itt annyi a szám ahány másodpercenként lehessen újra lőni
+    [SerializeField] public float bodySlamPower = -10;  //minél kisebb annál nagyobb
     public float climbSpeed = 3f;
     public bool isGrounded = false;
+    public bool didBodySlam = false;
 
     private float moveInput;
     private float verticalInput;
@@ -27,6 +30,7 @@ public class Player : MonoBehaviour
 
     [SerializeField] private Sprite armedCapybara;
     [SerializeField] private GameObject bulletPrefab;
+    [SerializeField] private GameObject slamPrefab;
 
     [SerializeField] private Collider2D bodyCollider;
     [SerializeField] private Collider2D feetCollider;
@@ -59,11 +63,22 @@ public class Player : MonoBehaviour
         HandleJump();
         Flip();
 
+        if (!isGrounded && Input.GetKeyDown(KeyCode.Mouse1))
+        {
+            BodySlam();
+            didBodySlam = true;
+        }
+
         if (holdingSlingshot && timeAfterLastShot <=0 && Input.GetKeyDown(KeyCode.Mouse0))
         {
             Shoot();
             timeAfterLastShot = timeAfterLastShotDefault;
         }
+    }
+
+    private void BodySlam()
+    {
+        rb.linearVelocity = new Vector2(rb.linearVelocity.x, bodySlamPower);
     }
 
     private void HandleMovement()
@@ -144,6 +159,7 @@ public class Player : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D other)
     {
+        //GameObject bodySlamCircle;
         if (other.gameObject.CompareTag("Ground"))
         {
             if (other.otherCollider == feetCollider)
@@ -152,6 +168,11 @@ public class Player : MonoBehaviour
                 if (normal.y > 0.5f)
                 {
                     isGrounded = true;
+                    if (didBodySlam){
+                        GameObject bodySlamCircle = Instantiate(slamPrefab, transform.position - new Vector3(0, 0.5f, 0), Quaternion.Euler(0, 0, 90));
+                    }
+                    //bodySlamCircle = Instantiate(slamPrefab, transform.position, transform.rotation);
+                    didBodySlam = false;
                 }
             }
         }

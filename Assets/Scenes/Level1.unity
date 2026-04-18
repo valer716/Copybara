@@ -768,10 +768,15 @@ MonoBehaviour:
   moveSpeed: 5
   jumpForce: 5
   bulletSpeed: 10
+  timeAfterLastShot: 0
+  timeAfterLastShotDefault: 1
+  bodySlamPower: -10
   climbSpeed: 3
   isGrounded: 0
+  didBodySlam: 0
   armedCapybara: {fileID: 7087496512485755265, guid: 8b6b3ae48d0c22a4698c424f72b9a248, type: 3}
   bulletPrefab: {fileID: 8513927596880638683, guid: 5c647db79dca17746976877b8c9aec6b, type: 3}
+  slamPrefab: {fileID: 7758907882733618702, guid: 0786fba925978e9478e7d334eaa23f97, type: 3}
   bodyCollider: {fileID: 447783923}
   feetCollider: {fileID: 447783924}
   normalGravityScale: 1
