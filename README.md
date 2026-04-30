@@ -10,3 +10,15 @@ A játék főhőse egy kapibara, amelynek célja, hogy különböző pályákon 
 
 ## Használt keretrendszer
 - Unity (C#)
+
+## Pályák és assetek elérése
+
+Pályák útjai:
+- Assets/Scenes/Level1.unity
+- Assets/Scenes/Level2.unity
+- Assets/Scenes/Level3.unity
+
+A főbb saját assetek elérési útjai:
+- Assets/Sprites/
+- Assets/Prefabs/
+- Assets/Tiles/
